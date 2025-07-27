@@ -1,0 +1,20 @@
+<main class="main">
+  <div class="content">
+    <!-- <h1 class="text-3xl font-bold underline">Hello, {{ title() }}</h1>
+    <p>Congratulations! Your app is running. 🎉</p> -->
+    <nav class="bg-blue-600 p-4 text-white">
+      <ul class="flex justify-center space-x-6">
+        <li>
+          <a routerLink="/ticketviewer" routerLinkActive="active" ariaCurrent="page" class="hover:text-blue-200">Ticketviewer</a>
+        </li>
+        <li>
+          <a routerLink="/knowledgebase" routerLinkActive="active" ariaCurrent="page" class="hover:text-blue-200">Knowledgebase</a>
+        </li>
+        <li>
+          <a routerLink="/livelogs" routerLinkActive="active" ariaCurrent="page" class="hover:text-blue-200">Live logs</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <router-outlet />

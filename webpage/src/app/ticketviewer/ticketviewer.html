@@ -1,0 +1,115 @@
+<div
+  class="min-h-screen bg-gray-100 flex items-center justify-center p-4 font-sans"
+>
+  <div class="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6">
+    <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">
+      Task Data Table
+    </h1>
+    <div class="flex flex-wrap gap-3 mb-6 justify-center">
+      <button
+        (click)="setFilter('All')"
+        [ngClass]="{
+          'bg-blue-600 text-white': selectedStatus === 'All',
+          'bg-gray-200 text-gray-700 hover:bg-gray-300':
+            selectedStatus !== 'All'
+        }"
+        class="px-4 py-2 rounded-md font-semibold transition duration-150 ease-in-out"
+      >
+        All
+      </button>
+      <button
+        (click)="setFilter('Open')"
+        [ngClass]="{
+          'bg-blue-600 text-white': selectedStatus === 'Open',
+          'bg-gray-200 text-gray-700 hover:bg-gray-300':
+            selectedStatus !== 'Open'
+        }"
+        class="px-4 py-2 rounded-md font-semibold transition duration-150 ease-in-out"
+      >
+        Open
+      </button>
+      <button
+        (click)="setFilter('In Progress')"
+        [ngClass]="{
+          'bg-blue-600 text-white': selectedStatus === 'In Progress',
+          'bg-gray-200 text-gray-700 hover:bg-gray-300':
+            selectedStatus !== 'In Progress'
+        }"
+        class="px-4 py-2 rounded-md font-semibold transition duration-150 ease-in-out"
+      >
+        In Progress
+      </button>
+      <button
+        (click)="setFilter('Closed')"
+        [ngClass]="{
+          'bg-blue-600 text-white': selectedStatus === 'Closed',
+          'bg-gray-200 text-gray-700 hover:bg-gray-300':
+            selectedStatus !== 'Closed'
+        }"
+        class="px-4 py-2 rounded-md font-semibold transition duration-150 ease-in-out"
+      >
+        Closed
+      </button>
+    </div>
+    <div class="overflow-x-auto rounded-lg border border-gray-200">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th
+              scope="col"
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              ID
+            </th>
+            <th
+              scope="col"
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              Subject
+            </th>
+            <th
+              scope="col"
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              Status
+            </th>
+            <th
+              scope="col"
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              Created At
+            </th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <tr *ngFor="let item of filteredData" class="hover:bg-gray-50">
+            <td
+              class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+            >
+              {{ item.id }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+              {{ item.subject }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span
+                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
+                [ngClass]="{
+                  'bg-blue-100 text-blue-800': item.status === 'Open',
+                  'bg-yellow-100 text-yellow-800':
+                    item.status === 'In Progress',
+                  'bg-gray-200 text-gray-800': item.status === 'Closed'
+                }"
+              >
+                {{ item.status }}
+              </span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+              {{ item.createdAt }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
