@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/domain/usecase/get_messages_usecase.dart';
+import 'package:flutter_app/domain/usecase/load_messages_usecase.dart';
 import 'package:flutter_app/domain/usecase/send_message_usecase.dart';
 import 'package:flutter_app/presentation/chat/blocs/chat_bloc.dart';
 import 'package:flutter_app/presentation/chat/widgets/chat_message.dart';
@@ -13,9 +14,10 @@ class ChatPage extends StatelessWidget {
     return BlocProvider<ChatBloc>(
       create: (context) => ChatBloc(
         userId: "123456",
+        loadMessagesUseCase: context.read<LoadMessagesUseCase>(),
         sendMessagesUseCase: context.read<SendMessageUseCase>(),
         getMessagesUseCase: context.read<GetMessageUseCase>(),
-      ),
+      )..add(LoadMessagesEvent()),
       child: ChatPageView(),
     );
   }
@@ -30,8 +32,8 @@ class ChatPageView extends StatefulWidget {
 
 class _ChatPageViewState extends State<ChatPageView> {
   final formKey = GlobalKey<FormState>();
-  final TextEditingController textController = TextEditingController();
-  final ScrollController scrollController = ScrollController();
+  final textController = TextEditingController();
+  final scrollController = ScrollController();
 
   @override
   void dispose() {
@@ -52,8 +54,7 @@ class _ChatPageViewState extends State<ChatPageView> {
               curve: Curves.easeOut,
             );
           }
-        }
-        if (state is ChatErrorState) {
+        } else if (state is ChatErrorState) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
@@ -80,7 +81,7 @@ class _ChatPageViewState extends State<ChatPageView> {
                     itemCount: messages.length,
                     itemBuilder: (context, index) {
                       final message = messages[index];
-                      return ChatMessageWidget(message: message);
+                      return ChatMessageWidget(chatMessage: message);
                     },
                   ),
                 ],
@@ -123,6 +124,17 @@ class _ChatPageViewState extends State<ChatPageView> {
                         },
                         onTapOutside: (event) {
                           FocusScope.of(context).unfocus();
+                        },
+                        onFieldSubmitted: (value) {
+                          if (formKey.currentState?.validate() == true) {
+                            context.read<ChatBloc>().add(
+                              SendMessageEvent(
+                                message: value,
+                                recipientUserId: "654321",
+                              ),
+                            );
+                            textController.clear();
+                          }
                         },
                       ),
                     ),

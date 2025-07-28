@@ -1,7 +1,11 @@
+import 'package:flutter_app/domain/model/chat_message.dart';
+
 abstract class MessageEntity {}
 
 class SuccessfulMessageEntity extends MessageEntity {
-  SuccessfulMessageEntity();
+  final ChatMessage message;
+
+  SuccessfulMessageEntity({required this.message});
 }
 
 class FailedMessageEntity extends MessageEntity {

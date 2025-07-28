@@ -2,6 +2,8 @@ part of 'chat_bloc.dart';
 
 abstract class ChatEvent {}
 
+class LoadMessagesEvent extends ChatEvent {}
+
 class SendMessageEvent extends ChatEvent {
   final String message;
   final String recipientUserId;

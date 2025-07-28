@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class Knowledgebase {
   editorContent: string =
-    '# Welcome to the Knowledgebase Editor\n\nThis is a **simple** editor with a *preview* mode.\n\n## Features:\n- Markdown support (basic rendering)\n- Toggle preview\n- Save functionality (console log only)';
+    '# Welcome to the Knowledgebase Editor';
   previewMode: boolean = false;
 
   togglePreview(): void {

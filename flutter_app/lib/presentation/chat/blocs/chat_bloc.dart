@@ -5,7 +5,9 @@ import 'package:flutter_app/domain/entity/message_entity.dart';
 import 'package:flutter_app/domain/entity/messages_entity.dart';
 import 'package:flutter_app/domain/model/chat_message.dart';
 import 'package:flutter_app/domain/usecase/get_messages_usecase.dart';
+import 'package:flutter_app/domain/usecase/load_messages_usecase.dart';
 import 'package:flutter_app/domain/usecase/params/get_messages_params.dart';
+import 'package:flutter_app/domain/usecase/params/load_messages_params.dart';
 import 'package:flutter_app/domain/usecase/params/send_message_params.dart';
 import 'package:flutter_app/domain/usecase/send_message_usecase.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,16 +17,33 @@ part 'chat_state.dart';
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final String userId;
+  final LoadMessagesUseCase loadMessagesUseCase;
   final SendMessageUseCase sendMessagesUseCase;
   final GetMessageUseCase getMessagesUseCase;
 
   ChatBloc({
     required this.userId,
+    required this.loadMessagesUseCase,
     required this.sendMessagesUseCase,
     required this.getMessagesUseCase,
   }) : super(InitialState(messages: [])) {
+    on<LoadMessagesEvent>(_loadMessages);
     on<SendMessageEvent>(_sendMessage);
     on<GetMessagesEvent>(_getMessages);
+  }
+  FutureOr<void> _loadMessages(
+    LoadMessagesEvent event,
+    Emitter<ChatState> emit,
+  ) async {
+    try {
+      final messages = await loadMessagesUseCase.call(
+        LoadMessagesParams(userId: userId),
+      );
+      emit(MessagesUpdatedState(messages: messages));
+    } on Exception catch (e) {
+      emit(ChatErrorState(messages: state.messages));
+      print(e);
+    }
   }
 
   FutureOr<void> _sendMessage(
@@ -32,13 +51,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     Emitter<ChatState> emit,
   ) async {
     try {
-      final messages = List.of(state.messages);
-      final message = OutgoingChatMessage(
-        message: event.message,
-        timestamp: DateTime.now(),
-      );
-      messages.insert(0, message);
-      emit(MessageSendingState(messages: messages));
+      emit(MessageSendingState(messages: state.messages));
       final response = await sendMessagesUseCase.call(
         SendMessageParams(
           message: event.message,
@@ -47,6 +60,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         ),
       );
       if (response is SuccessfulMessageEntity) {
+        final messages = List.of(state.messages);
+        final message = response.message;
+        messages.insert(0, message);
         emit(MessagesUpdatedState(messages: messages));
       }
       // simulate response
@@ -54,7 +70,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     } on Exception catch (e) {
       emit(ChatErrorState(messages: state.messages));
       print(e);
-      // _loggingService.logError(e);
     }
   }
 
@@ -67,14 +82,14 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         GetMessagesParams(userId: userId),
       );
       if (response is SuccessfulMessagesEntity) {
+        final newMessages = response.messages;
         final messages = List.of(state.messages);
-        messages.insertAll(0, response.messages);
+        messages.insertAll(0, newMessages);
         emit(MessagesReceivedState(messages: messages));
       }
     } on Exception catch (e) {
       emit(ChatErrorState(messages: state.messages));
       print(e);
-      // _loggingService.logError(e);
     }
   }
 }

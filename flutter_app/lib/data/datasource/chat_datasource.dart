@@ -43,7 +43,9 @@ class ChatDatasourceImpl extends ChatDatasource {
     required String userId,
   }) async {
     await Future.delayed(Duration(seconds: 1));
-    return SuccessfulSendMessageModel();
+    return SuccessfulSendMessageModel(
+      messageModel: MessageModel(message: message, timestamp: DateTime.now()),
+    );
   }
 
   @override
