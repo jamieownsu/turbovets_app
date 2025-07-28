@@ -3,7 +3,7 @@ import 'package:flutter_app/domain/usecase/get_messages_usecase.dart';
 import 'package:flutter_app/domain/usecase/load_messages_usecase.dart';
 import 'package:flutter_app/domain/usecase/send_message_usecase.dart';
 import 'package:flutter_app/presentation/chat/blocs/chat_bloc.dart';
-import 'package:flutter_app/presentation/chat/widgets/message_bubble_widget.dart';
+import 'package:flutter_app/presentation/chat/widgets/chat_list_sliver.dart';
 import 'package:flutter_app/presentation/chat/widgets/send_message_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -32,9 +32,6 @@ class ChatPageView extends StatefulWidget {
 }
 
 class _ChatPageViewState extends State<ChatPageView> {
-  final GlobalKey<SliverAnimatedListState> listKey =
-      GlobalKey<SliverAnimatedListState>();
-
   final scrollController = ScrollController();
 
   @override
@@ -45,6 +42,8 @@ class _ChatPageViewState extends State<ChatPageView> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
     return BlocConsumer<ChatBloc, ChatState>(
       listener: (context, state) {
         if (state is MessagesReceivedState) {
@@ -60,11 +59,11 @@ class _ChatPageViewState extends State<ChatPageView> {
             SnackBar(
               content: Text(
                 "Something went wrong!",
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  color: Theme.of(context).colorScheme.onErrorContainer,
+                style: textTheme.bodyMedium!.copyWith(
+                  color: colorScheme.onErrorContainer,
                 ),
               ),
-              backgroundColor: Theme.of(context).colorScheme.errorContainer,
+              backgroundColor: colorScheme.errorContainer,
             ),
           );
         }
@@ -73,21 +72,16 @@ class _ChatPageViewState extends State<ChatPageView> {
         final messages = state.messages;
         return Column(
           children: [
-            Expanded(
-              child: CustomScrollView(
-                controller: scrollController,
-                reverse: true,
-                slivers: [
-                  SliverList.builder(
-                    itemCount: messages.length,
-                    itemBuilder: (context, index) {
-                      final message = messages[index];
-                      return MessageBubbleWidget(chatMessage: message);
-                    },
-                  ),
-                ],
-              ),
-            ),
+            if (state is! InitialState)
+              Expanded(
+                child: CustomScrollView(
+                  controller: scrollController,
+                  reverse: true,
+                  slivers: [ChatListSliver(messages: messages)],
+                ),
+              )
+            else
+              Expanded(child: Center(child: CircularProgressIndicator())),
             SendMessageWidget(isSending: state is MessageSendingState),
           ],
         );

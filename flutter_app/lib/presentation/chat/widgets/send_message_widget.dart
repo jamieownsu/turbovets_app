@@ -26,7 +26,7 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
       decoration: BoxDecoration(
         color: colorScheme.primaryContainer,
         boxShadow: [
@@ -82,7 +82,7 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(left: 8),
+            margin: EdgeInsets.only(left: 16),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(color: colorScheme.secondary, width: 2),

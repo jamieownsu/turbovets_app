@@ -20,8 +20,15 @@ class MessageSendingState extends ChatState {
   List<Object?> get props => [messages];
 }
 
-class MessagesUpdatedState extends ChatState {
-  const MessagesUpdatedState({required super.messages});
+class MessagesLoadedState extends ChatState {
+  const MessagesLoadedState({required super.messages});
+
+  @override
+  List<Object?> get props => [messages];
+}
+
+class MessageSentState extends ChatState {
+  const MessageSentState({required super.messages});
 
   @override
   List<Object?> get props => [messages];

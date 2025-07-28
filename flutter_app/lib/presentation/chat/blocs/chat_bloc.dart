@@ -39,7 +39,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       final messages = await loadMessagesUseCase.call(
         LoadMessagesParams(userId: userId),
       );
-      emit(MessagesUpdatedState(messages: messages));
+      emit(MessagesLoadedState(messages: messages));
     } on Exception {
       emit(ChatErrorState(messages: state.messages));
     }
@@ -62,7 +62,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         final messages = List.of(state.messages);
         final message = response.message;
         messages.insert(0, message);
-        emit(MessagesUpdatedState(messages: messages));
+        emit(MessageSentState(messages: messages));
       }
       // simulate response
       add(GetMessagesEvent(userId: userId));
