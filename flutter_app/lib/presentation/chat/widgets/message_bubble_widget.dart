@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/domain/model/chat_message.dart';
 import 'package:flutter_app/presentation/chat/mixins/timestamp_mixin.dart';
 
-class ChatMessageWidget extends StatelessWidget with TimestampMixin {
+class MessageBubbleWidget extends StatelessWidget with TimestampMixin {
   final ChatMessage chatMessage;
 
-  const ChatMessageWidget({super.key, required this.chatMessage});
+  const MessageBubbleWidget({super.key, required this.chatMessage});
 
   @override
   Widget build(BuildContext context) {
