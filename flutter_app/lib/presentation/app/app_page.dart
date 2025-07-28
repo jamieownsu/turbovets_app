@@ -39,7 +39,6 @@ class _AppPageState extends State<AppPage> {
           );
         },
         child: PageView(
-          physics: const NeverScrollableScrollPhysics(),
           controller: controller,
           children: const [ChatPage(), WebviewPage()],
         ),
