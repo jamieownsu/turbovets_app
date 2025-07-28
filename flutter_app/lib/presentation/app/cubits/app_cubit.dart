@@ -1,24 +1,30 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_app/presentation/app/cubits/app_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 const routes = ['Chat', 'Webview'];
 
 class AppCubit extends Cubit<AppState> {
-  final PageController controller = PageController();
+  final bool isDarkMode;
 
-  AppCubit() : super(const AppState.initial());
+  AppCubit({required this.isDarkMode})
+    : super(AppState.initial(isDarkMode: isDarkMode));
 
   void updateNavigationIndex(int index) {
-    controller.animateToPage(
-      index,
-      duration: const Duration(milliseconds: 400),
-      curve: Curves.ease,
-    );
     emit(
       AppState.updateNavigation(
         navigationIndex: index,
         pageTitle: routes[index],
+        isDarkMode: state.isDarkMode,
+      ),
+    );
+  }
+
+  void setIsDarkMode({required bool value}) {
+    emit(
+      AppState.updateDarkMode(
+        navigationIndex: state.navigationIndex,
+        pageTitle: state.pageTitle,
+        isDarkMode: value,
       ),
     );
   }

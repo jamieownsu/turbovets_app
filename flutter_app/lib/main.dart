@@ -9,14 +9,22 @@ import 'package:flutter_app/presentation/app/app_page.dart';
 import 'package:flutter_app/presentation/app/cubits/app_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   Hive.registerAdapter(ChatMessageAdapter());
   Hive.registerAdapter(MessageOriginTypeAdapter());
+  final sharedPrefs = await SharedPreferences.getInstance();
+  final isDarkMode = sharedPrefs.getBool("is_dark_mode") ?? false;
   final chatBox = await Hive.openBox<ChatMessage>('chatMessages');
-  runApp(MyApp(chatBox: chatBox));
+  runApp(
+    BlocProvider<AppCubit>(
+      create: (context) => AppCubit(isDarkMode: isDarkMode),
+      child: MyApp(chatBox: chatBox),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -29,7 +37,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'TurboVets App',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.indigo,
+          brightness: context.watch<AppCubit>().state.isDarkMode
+              ? Brightness.dark
+              : Brightness.light,
+        ),
       ),
       home: MultiRepositoryProvider(
         providers: [
@@ -57,10 +70,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ],
-        child: BlocProvider<AppCubit>(
-          create: (context) => AppCubit(),
-          child: AppPage(),
-        ),
+        child: AppPage(),
       ),
     );
   }

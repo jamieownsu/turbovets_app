@@ -9,6 +9,7 @@ class MessageBubbleWidget extends StatelessWidget with TimestampMixin {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     final width = MediaQuery.sizeOf(context).width;
     final orignType = chatMessage.originType;
     final message = chatMessage.message;
@@ -31,10 +32,13 @@ class MessageBubbleWidget extends StatelessWidget with TimestampMixin {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(message, style: Theme.of(context).textTheme.titleLarge),
+                Text(
+                  message,
+                  style: textTheme.titleLarge!.copyWith(color: Colors.black),
+                ),
                 Text(
                   formatSentTimestamp(timestamp),
-                  style: Theme.of(context).textTheme.labelSmall,
+                  style: textTheme.labelSmall!.copyWith(color: Colors.black54),
                 ),
               ],
             ),

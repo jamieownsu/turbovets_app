@@ -40,9 +40,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         LoadMessagesParams(userId: userId),
       );
       emit(MessagesUpdatedState(messages: messages));
-    } on Exception catch (e) {
+    } on Exception {
       emit(ChatErrorState(messages: state.messages));
-      print(e);
     }
   }
 
@@ -67,9 +66,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       }
       // simulate response
       add(GetMessagesEvent(userId: userId));
-    } on Exception catch (e) {
+    } on Exception {
       emit(ChatErrorState(messages: state.messages));
-      print(e);
     }
   }
 
@@ -87,9 +85,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         messages.insertAll(0, newMessages);
         emit(MessagesReceivedState(messages: messages));
       }
-    } on Exception catch (e) {
+    } on Exception {
       emit(ChatErrorState(messages: state.messages));
-      print(e);
     }
   }
 }

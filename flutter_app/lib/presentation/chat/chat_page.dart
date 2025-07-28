@@ -32,6 +32,9 @@ class ChatPageView extends StatefulWidget {
 }
 
 class _ChatPageViewState extends State<ChatPageView> {
+  final GlobalKey<SliverAnimatedListState> listKey =
+      GlobalKey<SliverAnimatedListState>();
+
   final scrollController = ScrollController();
 
   @override

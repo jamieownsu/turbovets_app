@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/core/navigation/bottom_navigation_widget.dart';
 import 'package:flutter_app/presentation/app/cubits/app_cubit.dart';
+import 'package:flutter_app/presentation/app/cubits/app_state.dart';
+import 'package:flutter_app/presentation/app/widgets/app_bar_widget.dart';
 import 'package:flutter_app/presentation/chat/chat_page.dart';
 import 'package:flutter_app/presentation/webview/webview_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,17 +15,34 @@ class AppPage extends StatefulWidget {
 }
 
 class _AppPageState extends State<AppPage> {
+  final PageController controller = PageController();
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(context.watch<AppCubit>().state.pageTitle),
-        centerTitle: true,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(kToolbarHeight),
+        child: AppBarWidget(),
       ),
-      body: PageView(
-        physics: const NeverScrollableScrollPhysics(),
-        controller: context.watch<AppCubit>().controller,
-        children: const [ChatPage(), WebviewPage()],
+      body: BlocListener<AppCubit, AppState>(
+        listener: (context, state) {
+          controller.animateToPage(
+            state.navigationIndex,
+            duration: const Duration(milliseconds: 400),
+            curve: Curves.ease,
+          );
+        },
+        child: PageView(
+          physics: const NeverScrollableScrollPhysics(),
+          controller: controller,
+          children: const [ChatPage(), WebviewPage()],
+        ),
       ),
       bottomNavigationBar: const BottomNavigationWidget(),
     );
