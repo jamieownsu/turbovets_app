@@ -32,11 +32,13 @@ class _AppPageState extends State<AppPage> {
       ),
       body: BlocListener<AppCubit, AppState>(
         listener: (context, state) {
-          controller.animateToPage(
-            state.navigationIndex,
-            duration: const Duration(milliseconds: 400),
-            curve: Curves.ease,
-          );
+          if (state is NavigationState) {
+            controller.animateToPage(
+              state.navigationIndex,
+              duration: Durations.medium4,
+              curve: Curves.ease,
+            );
+          }
         },
         child: PageView(
           controller: controller,

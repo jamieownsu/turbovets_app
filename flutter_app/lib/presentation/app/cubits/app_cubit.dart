@@ -7,11 +7,17 @@ class AppCubit extends Cubit<AppState> {
   final bool isDarkMode;
 
   AppCubit({required this.isDarkMode})
-    : super(AppState.initial(isDarkMode: isDarkMode));
+    : super(
+        AppState(
+          navigationIndex: 0,
+          pageTitle: routes[0],
+          isDarkMode: isDarkMode,
+        ),
+      );
 
   void updateNavigationIndex(int index) {
     emit(
-      AppState.updateNavigation(
+      NavigationState(
         navigationIndex: index,
         pageTitle: routes[index],
         isDarkMode: state.isDarkMode,
@@ -21,7 +27,7 @@ class AppCubit extends Cubit<AppState> {
 
   void setIsDarkMode({required bool value}) {
     emit(
-      AppState.updateDarkMode(
+      ThemeBrightnessState(
         navigationIndex: state.navigationIndex,
         pageTitle: state.pageTitle,
         isDarkMode: value,

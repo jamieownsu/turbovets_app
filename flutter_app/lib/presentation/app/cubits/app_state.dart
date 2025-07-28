@@ -3,21 +3,33 @@ class AppState {
   final String pageTitle;
   final bool isDarkMode;
 
-  const AppState.initial({
-    this.navigationIndex = 0,
-    this.pageTitle = 'Chat',
-    required this.isDarkMode,
-  });
-
-  const AppState.updateNavigation({
+  const AppState({
     required this.navigationIndex,
     required this.pageTitle,
     required this.isDarkMode,
   });
+}
 
-  const AppState.updateDarkMode({
-    required this.navigationIndex,
-    required this.pageTitle,
-    required this.isDarkMode,
+class InitialState extends AppState {
+  InitialState({
+    required super.navigationIndex,
+    required super.pageTitle,
+    required super.isDarkMode,
+  });
+}
+
+class NavigationState extends AppState {
+  NavigationState({
+    required super.navigationIndex,
+    required super.pageTitle,
+    required super.isDarkMode,
+  });
+}
+
+class ThemeBrightnessState extends AppState {
+  ThemeBrightnessState({
+    required super.navigationIndex,
+    required super.pageTitle,
+    required super.isDarkMode,
   });
 }
