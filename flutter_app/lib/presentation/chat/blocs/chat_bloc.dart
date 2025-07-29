@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter_app/domain/entity/chat_message_entity.dart';
 import 'package:flutter_app/domain/entity/message_entity.dart';
 import 'package:flutter_app/domain/entity/messages_entity.dart';
-import 'package:flutter_app/domain/model/chat_message.dart';
 import 'package:flutter_app/domain/usecase/get_messages_usecase.dart';
 import 'package:flutter_app/domain/usecase/load_messages_usecase.dart';
 import 'package:flutter_app/domain/usecase/params/get_messages_params.dart';

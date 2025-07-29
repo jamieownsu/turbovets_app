@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/domain/model/chat_message.dart';
+import 'package:flutter_app/domain/entity/chat_message_entity.dart';
 import 'package:flutter_app/presentation/chat/mixins/timestamp_mixin.dart';
 
 class MessageBubbleWidget extends StatelessWidget with TimestampMixin {
-  final ChatMessage chatMessage;
+  final ChatMessageEntity chatMessage;
 
   const MessageBubbleWidget({super.key, required this.chatMessage});
 

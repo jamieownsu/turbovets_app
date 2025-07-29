@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 
-part 'chat_message.g.dart';
+part 'chat_message_entity.g.dart';
 
 @HiveType(typeId: 1)
 enum MessageOriginType {
@@ -11,7 +11,7 @@ enum MessageOriginType {
 }
 
 @HiveType(typeId: 0)
-class ChatMessage extends HiveObject {
+class ChatMessageEntity extends HiveObject {
   @HiveField(0)
   final String message;
   @HiveField(1)
@@ -19,7 +19,7 @@ class ChatMessage extends HiveObject {
   @HiveField(2)
   final MessageOriginType originType;
 
-  ChatMessage({
+  ChatMessageEntity({
     required this.message,
     required this.timestamp,
     required this.originType,

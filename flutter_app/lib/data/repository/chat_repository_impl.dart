@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter_app/data/datasource/chat_datasource.dart';
 import 'package:flutter_app/data/model/get_messages_model.dart';
 import 'package:flutter_app/data/model/send_message_model.dart';
+import 'package:flutter_app/domain/entity/chat_message_entity.dart';
 import 'package:flutter_app/domain/entity/message_entity.dart';
 import 'package:flutter_app/domain/entity/messages_entity.dart';
-import 'package:flutter_app/domain/model/chat_message.dart';
 import 'package:flutter_app/domain/repository/chat_repository.dart';
 import 'package:flutter_app/domain/usecase/params/get_messages_params.dart';
 import 'package:flutter_app/domain/usecase/params/load_messages_params.dart';
@@ -14,12 +14,12 @@ import 'package:hive/hive.dart';
 
 class ChatRepositoryImpl extends ChatRepository {
   final ChatDatasource datasource;
-  final Box<ChatMessage> chatBox;
+  final Box<ChatMessageEntity> chatBox;
 
   ChatRepositoryImpl({required this.datasource, required this.chatBox});
 
   @override
-  Future<List<ChatMessage>> loadMessages({
+  Future<List<ChatMessageEntity>> loadMessages({
     required LoadMessagesParams params,
   }) async {
     final messages = chatBox.values.toList();
@@ -37,7 +37,7 @@ class ChatRepositoryImpl extends ChatRepository {
       final messageModel = response.messageModel;
       final message = messageModel.message;
       final timestamp = messageModel.timestamp;
-      final chatMessage = ChatMessage(
+      final chatMessage = ChatMessageEntity(
         message: message,
         timestamp: timestamp,
         originType: MessageOriginType.outgoing,
@@ -57,7 +57,7 @@ class ChatRepositoryImpl extends ChatRepository {
     if (response is SuccessfulGetMessagesModel) {
       return SuccessfulMessagesEntity(
         messages: response.messages.map((e) {
-          final chatMessage = ChatMessage(
+          final chatMessage = ChatMessageEntity(
             message: e.message,
             timestamp: e.timestamp,
             originType: MessageOriginType.incoming,

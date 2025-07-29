@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/data/datasource/chat_datasource.dart';
 import 'package:flutter_app/data/repository/chat_repository_impl.dart';
-import 'package:flutter_app/domain/model/chat_message.dart';
+import 'package:flutter_app/domain/entity/chat_message_entity.dart';
 import 'package:flutter_app/domain/usecase/get_messages_usecase.dart';
 import 'package:flutter_app/domain/usecase/load_messages_usecase.dart';
 import 'package:flutter_app/domain/usecase/send_message_usecase.dart';
@@ -14,11 +14,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-  Hive.registerAdapter(ChatMessageAdapter());
+  Hive.registerAdapter(ChatMessageEntityAdapter());
   Hive.registerAdapter(MessageOriginTypeAdapter());
   final sharedPrefs = await SharedPreferences.getInstance();
   final isDarkMode = sharedPrefs.getBool("is_dark_mode") ?? false;
-  final chatBox = await Hive.openBox<ChatMessage>('chatMessages');
+  final chatBox = await Hive.openBox<ChatMessageEntity>('chatMessages');
   runApp(
     BlocProvider<AppCubit>(
       create: (context) => AppCubit(isDarkMode: isDarkMode),
@@ -28,7 +28,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  final Box<ChatMessage> chatBox;
+  final Box<ChatMessageEntity> chatBox;
 
   const MyApp({super.key, required this.chatBox});
 

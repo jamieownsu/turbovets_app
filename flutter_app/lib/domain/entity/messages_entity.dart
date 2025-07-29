@@ -1,9 +1,9 @@
-import 'package:flutter_app/domain/model/chat_message.dart';
+import 'package:flutter_app/domain/entity/chat_message_entity.dart';
 
 abstract class MessagesEntity {}
 
 class SuccessfulMessagesEntity extends MessagesEntity {
-  final List<ChatMessage> messages;
+  final List<ChatMessageEntity> messages;
 
   SuccessfulMessagesEntity({required this.messages});
 }

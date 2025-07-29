@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/domain/model/chat_message.dart';
+import 'package:flutter_app/domain/entity/chat_message_entity.dart';
 import 'package:flutter_app/presentation/chat/blocs/chat_bloc.dart';
 import 'package:flutter_app/presentation/chat/widgets/message_bubble_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ChatListSliver extends StatefulWidget {
-  final List<ChatMessage> messages;
+  final List<ChatMessageEntity> messages;
 
   const ChatListSliver({super.key, required this.messages});
 
@@ -16,7 +16,7 @@ class ChatListSliver extends StatefulWidget {
 class _ChatListSliverState extends State<ChatListSliver> {
   final GlobalKey<SliverAnimatedListState> listKey =
       GlobalKey<SliverAnimatedListState>();
-  final List<ChatMessage> chatlist = [];
+  final List<ChatMessageEntity> chatlist = [];
 
   @override
   void initState() {
