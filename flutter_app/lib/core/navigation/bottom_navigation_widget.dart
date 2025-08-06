@@ -14,7 +14,7 @@ class BottomNavigationWidget extends StatelessWidget {
       ],
       currentIndex: context.watch<AppCubit>().state.navigationIndex,
       onTap: (i) {
-        context.read<AppCubit>().updateNavigationIndex(i);
+        context.read<AppCubit>().updateNavigationIndex(index: i);
       },
     );
   }

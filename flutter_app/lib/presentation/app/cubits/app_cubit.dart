@@ -15,7 +15,7 @@ class AppCubit extends Cubit<AppState> {
         ),
       );
 
-  void updateNavigationIndex(int index) {
+  void updateNavigationIndex({required int index}) {
     emit(
       NavigationState(
         navigationIndex: index,
