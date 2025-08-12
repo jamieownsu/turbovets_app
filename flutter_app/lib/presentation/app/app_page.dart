@@ -31,14 +31,13 @@ class _AppPageState extends State<AppPage> {
         child: AppBarWidget(),
       ),
       body: BlocListener<AppCubit, AppState>(
+        listenWhen: (previous, current) => current is NavigationState,
         listener: (context, state) {
-          if (state is NavigationState) {
-            controller.animateToPage(
-              state.navigationIndex,
-              duration: Durations.medium4,
-              curve: Curves.ease,
-            );
-          }
+          controller.animateToPage(
+            state.navigationIndex,
+            duration: Durations.medium4,
+            curve: Curves.ease,
+          );
         },
         child: PageView(
           controller: controller,
